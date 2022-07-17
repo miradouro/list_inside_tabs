@@ -12,6 +12,22 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage> {
   final _todoControler = TextEditingController();
 
+  List lista = [
+    "feijão carioca",
+    "pão de castanha do para com quinoa",
+    "300 Gr de mussarela",
+    "150 grs de peito de peru",
+    "bolinho Ana maria",
+    "alho",
+    "cebola",
+    "papel higiênico neve",
+    "2 molho de tomate pomarola",
+    "queijo parmesão ralado",
+    "guaraná zero sem açúcar",
+    "2 chocolate",
+    "2 zero cal stevia",
+  ];
+
   List _toDoList = [];
 
   Map<String, dynamic> _lastRemoved = Map();
@@ -28,22 +44,102 @@ class _FirstPageState extends State<FirstPage> {
     });
   }
 
+  void confResetarEstado() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Desmarcar Tudo:'),
+        content: Text('Você tem certeza que deseja desmarcar todos os itens?'),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Color(0xff58d8b5)),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: (){
+              _resetarEstado();
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Colors.red),
+            child: Text('Desmarcar Tudo'),
+          ),
+        ],
+      ),
+    );
+  }
+  void _resetarEstado() {
+    for (var item in _toDoList) {
+      setState(() {
+        item["ok"] = false;
+      });
+    }
+    _saveData();
+  }
+
+  void confDelItens() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Apagar Tudo:'),
+        content: Text('Você tem certeza que deseja apagar todos os itens da lista?'),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Color(0xff58d8b5)),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: (){
+              _deleteAllTodos();
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Colors.red),
+            child: Text('Apagar Tudo'),
+          ),
+        ],
+      ),
+    );
+  }
+  void _deleteAllTodos(){
+    setState((){
+      _toDoList.clear();
+    });
+    _saveData();
+  }
+
+
+  void confIncluirNaMao() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Incluir Lista:'),
+        content: Text('Você tem certeza que deseja incluir a lista?'),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Color(0xff58d8b5)),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: (){
+              _naMao();
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Colors.red),
+            child: Text('Incluir tudo Tudo'),
+          ),
+        ],
+      ),
+    );
+  }
   void _naMao() {
-    List lista = [
-      "feijão carioca",
-      "pão de castanha do para com quinoa",
-      "300 Gr de mussarela",
-      "150 grs de peito de peru",
-      "bolinho Ana maria",
-      "alho",
-      "cebola",
-      "papel higiênico neve",
-      "2 molho de tomate pomarola",
-      "queijo parmesão ralado",
-      "guaraná zero sem açúcar",
-      "2 chocolate",
-      "2 zero cal stevia",
-    ];
     for (var item in lista) {
       setState(() {
         Map<String, dynamic> newToDo = Map();
@@ -91,13 +187,6 @@ class _FirstPageState extends State<FirstPage> {
             padding: EdgeInsets.fromLTRB(17, 1, 7, 1),
             child: Row(
               children: <Widget>[
-                ElevatedButton(
-                  onPressed: _naMao,
-                  child: Text(
-                    "+",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
                 Expanded(
                   child: TextField(
                     // use the text align property
@@ -127,6 +216,23 @@ class _FirstPageState extends State<FirstPage> {
                   itemBuilder: buildItem),
               onRefresh: _refresh,
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                onPressed: confIncluirNaMao,
+                child: Text("+", style: TextStyle(color: Colors.white)),
+              ),
+              ElevatedButton(
+                onPressed: confDelItens,
+                child: Text("Apagar Lista", style: TextStyle(color: Colors.white)),
+              ),
+              ElevatedButton(
+                onPressed: confResetarEstado,
+                child: Text("Resetar", style: TextStyle(color: Colors.white)),
+              ),
+            ],
           ),
         ],
       ),
