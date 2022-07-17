@@ -34,6 +34,21 @@ class _SecondPageState extends State<SecondPage> {
     });
   }
 
+  void _naMao() {
+    List lista = [
+      "3 glifage XR 500 mi",
+    ];
+    for (var item in lista) {
+      setState(() {
+        Map<String, dynamic> newToDo = Map();
+        newToDo["title"] = item;
+        newToDo["ok"] = false;
+        _toDoList.add(newToDo);
+        _saveData();
+      });
+    }
+  }
+
   void _addTodo() {
     setState(() {
       Map<String, dynamic> newToDo = Map();
@@ -70,12 +85,21 @@ class _SecondPageState extends State<SecondPage> {
             padding: EdgeInsets.fromLTRB(17, 1, 7, 1),
             child: Row(
               children: <Widget>[
+                ElevatedButton(
+                  onPressed: _naMao,
+                  child: Text(
+                    "+",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
                 Expanded(
                   child: TextField(
+                    // use the text align property
+                    textAlign: TextAlign.center,
                     controller: _todoControler,
                     decoration: InputDecoration(
-                      labelText: "Nova Tarefa",
-                      labelStyle: TextStyle(color: Colors.blueAccent),
+                      hintText: "Nova Tarefa",
+                      hintStyle: TextStyle(color: Colors.blueAccent),
                     ),
                   ),
                 ),
