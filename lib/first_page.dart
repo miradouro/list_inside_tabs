@@ -133,7 +133,7 @@ class _FirstPageState extends State<FirstPage> {
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(primary: Colors.red),
-            child: Text('Incluir tudo Tudo'),
+            child: Text('Incluir Tudo'),
           ),
         ],
       ),
