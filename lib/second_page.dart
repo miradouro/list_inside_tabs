@@ -11,9 +11,11 @@ class SecondPage extends StatefulWidget {
 }
 
 class _SecondPageState extends State<SecondPage> {
-
-
   final _todoControler = TextEditingController();
+
+  List lista = [
+    "loratamed",
+  ];
 
   List _toDoList = [];
 
@@ -31,10 +33,103 @@ class _SecondPageState extends State<SecondPage> {
     });
   }
 
+
+  void confResetarEstado() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Desmarcar Tudo:'),
+        content: Text('Você tem certeza que deseja desmarcar todos os itens?'),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Color(0xff58d8b5)),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: (){
+              _resetarEstado();
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Colors.red),
+            child: Text('Desmarcar Tudo'),
+          ),
+        ],
+      ),
+    );
+  }
+  void _resetarEstado() {
+    for (var item in _toDoList) {
+      setState(() {
+        item["ok"] = false;
+      });
+    }
+    _saveData();
+  }
+
+  void confDelItens() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Apagar Tudo:'),
+        content: Text('Você tem certeza que deseja apagar todos os itens da lista?'),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Color(0xff58d8b5)),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: (){
+              _deleteAllTodos();
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Colors.red),
+            child: Text('Apagar Tudo'),
+          ),
+        ],
+      ),
+    );
+  }
+  void _deleteAllTodos(){
+    setState((){
+      _toDoList.clear();
+    });
+    _saveData();
+  }
+
+
+  void confIncluirNaMao() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Incluir Lista:'),
+        content: Text('Você tem certeza que deseja incluir a lista?'),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Color(0xff58d8b5)),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: (){
+              _naMao();
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(primary: Colors.red),
+            child: Text('Incluir Tudo'),
+          ),
+        ],
+      ),
+    );
+  }
   void _naMao() {
-    List lista = [
-      "3 glifage XR 500 mi",
-    ];
     for (var item in lista) {
       setState(() {
         Map<String, dynamic> newToDo = Map();
@@ -82,13 +177,6 @@ class _SecondPageState extends State<SecondPage> {
             padding: EdgeInsets.fromLTRB(17, 1, 7, 1),
             child: Row(
               children: <Widget>[
-                ElevatedButton(
-                  onPressed: _naMao,
-                  child: Text(
-                    "+",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
                 Expanded(
                   child: TextField(
                     // use the text align property
@@ -102,7 +190,10 @@ class _SecondPageState extends State<SecondPage> {
                 ),
                 ElevatedButton(
                   onPressed: _addTodo,
-                  child: Text("ADD", style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    "ADD",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -116,6 +207,23 @@ class _SecondPageState extends State<SecondPage> {
               onRefresh: _refresh,
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                onPressed: confIncluirNaMao,
+                child: Text("+", style: TextStyle(color: Colors.white)),
+              ),
+              ElevatedButton(
+                onPressed: confDelItens,
+                child: Text("Apagar Lista", style: TextStyle(color: Colors.white)),
+              ),
+              ElevatedButton(
+                onPressed: confResetarEstado,
+                child: Text("Resetar", style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -123,29 +231,29 @@ class _SecondPageState extends State<SecondPage> {
 
   Widget buildItem(context, index) {
     return Dismissible(
-      key: Key(DateTime
-          .now()
-          .microsecondsSinceEpoch
-          .toString()),
+      key: Key(DateTime.now().microsecondsSinceEpoch.toString()),
       background: Container(
           color: Colors.red,
           child: Align(
             alignment: Alignment(-0.9, 0.0),
-            child: Icon(Icons.delete, color: Colors.white,),
-          )
-      ),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+          )),
       direction: DismissDirection.startToEnd,
       child: CheckboxListTile(
         title: Text(_toDoList[index]["title"]),
         value: _toDoList[index]["ok"],
         secondary: CircleAvatar(
           child: Icon(_toDoList[index]["ok"] ? Icons.check : Icons.error),
-        ), onChanged: (value) {
-        setState(() {
-          _toDoList[index]["ok"] = value;
-          _saveData();
-        });
-      },
+        ),
+        onChanged: (value) {
+          setState(() {
+            _toDoList[index]["ok"] = value;
+            _saveData();
+          });
+        },
       ),
       onDismissed: (direction) {
         setState(() {

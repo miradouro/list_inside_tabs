@@ -13,19 +13,39 @@ class _FirstPageState extends State<FirstPage> {
   final _todoControler = TextEditingController();
 
   List lista = [
-    "feijão carioca",
-    "pão de castanha do para com quinoa",
+    // "feijão carioca",
+    // "pão de forma tradicional",
+    // "papel higiênico neve",
+    // "2 molho de tomate pomarola",
+    // "queijo parmesão ralado",
+    // "guaraná zero sem açúcar",
+    // "2 zero cal stevia",
+    // "vinagre branco",
+    // "carne moída patinho",
+    // "óleo de milho",
+    // "café cabloco",
+    // "papel toalha",
+    // "3 detergentes",
+    // "peito de frango",
+    // "alho",
+    // "cebola",
+    // "2 queijo ralados vigor",
+    // "macarrão pene",
+    // "pondera",
     "300 Gr de mussarela",
     "150 grs de peito de peru",
     "bolinho Ana maria",
-    "alho",
-    "cebola",
-    "papel higiênico neve",
-    "2 molho de tomate pomarola",
-    "queijo parmesão ralado",
-    "guaraná zero sem açúcar",
+    "manteiga aviação",
+    "pão de castanha do para com quinoa",
     "2 chocolate",
-    "2 zero cal stevia",
+    "mms",
+    "amendoin",
+    "guaraná zero sem açúcar",
+    "guarana",
+    "2 pomarola",
+    "margarina Qualy com sal",
+    "colecalciferol 10000  U I com 30 comprimidos",
+    "2 omeprazol 20 ml",
   ];
 
   List _toDoList = [];
@@ -43,6 +63,7 @@ class _FirstPageState extends State<FirstPage> {
       });
     });
   }
+
 
   void confResetarEstado() {
     showDialog(
